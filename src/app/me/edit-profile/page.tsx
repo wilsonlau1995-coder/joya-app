@@ -7,7 +7,7 @@ import { ArrowLeft, Plus, X, Calendar, Globe, ChevronRight, AlertTriangle, Check
 import Toast from "@/components/Toast";
 
 type ToastState = { open: boolean; message: string };
-type Photo = { id: string; url: string };
+type Photo = { id: string; url: string; pending?: boolean };
 type Language = { code: string; name: string; flag: string };
 
 function EditProfileContent() {
@@ -17,7 +17,7 @@ function EditProfileContent() {
   
   const [photos, setPhotos] = useState<Photo[]>([
     { id: "1", url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop" },
-    { id: "2", url: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop" },
+    { id: "2", url: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop", pending: true },
   ]);
   
   const [nickname, setNickname] = useState("Wilson");
@@ -213,24 +213,34 @@ function EditProfileContent() {
                 className="aspect-square relative"
               >
                 {photo.url ? (
-                  <img
-                    src={photo.url}
-                    alt="照片"
-                    className="h-full w-full rounded-2xl object-cover"
-                  />
+                  <>
+                    <img
+                      src={photo.url}
+                      alt="照片"
+                      className="h-full w-full rounded-2xl object-cover"
+                    />
+                    {photo.pending && (
+                      <div className="absolute inset-0 rounded-2xl bg-black/50 flex flex-col items-center justify-center">
+                        <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin mb-2"></div>
+                        <span className="text-white text-sm font-medium">审核中</span>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <div className="h-full w-full rounded-2xl bg-joya-yellow/20 flex items-center justify-center">
                     <span className="text-joya-black/40 text-sm">照片</span>
                   </div>
                 )}
-                <button
-                  type="button"
-                  className="absolute top-2 right-2 h-6 w-6 rounded-full bg-white/90 flex items-center justify-center transition"
-                  onClick={() => handleDeletePhoto(photo.id)}
-                  aria-label="删除照片"
-                >
-                  <X className="h-3 w-3 text-joya-black/60" />
-                </button>
+                {!photo.pending && (
+                  <button
+                    type="button"
+                    className="absolute top-2 right-2 h-6 w-6 rounded-full bg-white/90 flex items-center justify-center transition"
+                    onClick={() => handleDeletePhoto(photo.id)}
+                    aria-label="删除照片"
+                  >
+                    <X className="h-3 w-3 text-joya-black/60" />
+                  </button>
+                )}
               </div>
             ))}
 
