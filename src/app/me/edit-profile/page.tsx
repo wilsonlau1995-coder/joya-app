@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Plus, X, Calendar, Globe, ChevronRight, AlertTriangle, Check, Edit } from "lucide-react";
 
@@ -10,7 +10,7 @@ type ToastState = { open: boolean; message: string };
 type Photo = { id: string; url: string };
 type Language = { code: string; name: string; flag: string };
 
-export default function EditProfilePage() {
+function EditProfileContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
@@ -39,7 +39,6 @@ export default function EditProfilePage() {
     { code: "en", name: "English", flag: "🇬🇧" },
   ]);
 
-  // 从URL参数中获取返回的语言选择结果
   useEffect(() => {
     const type = searchParams.get("type") as "native" | "interest";
     const selected = searchParams.get("selected");
@@ -52,15 +51,12 @@ export default function EditProfilePage() {
         } else if (type === "interest") {
           setInterestLanguages(selectedLanguages);
         }
-        // 清除URL参数
         router.push("/me/edit-profile", { scroll: false });
       } catch (error) {
         console.error("解析语言选择结果失败:", error);
       }
     }
   }, [searchParams, router]);
-
-
 
   function showToast(message: string) {
     setToast({ open: true, message });
@@ -93,21 +89,18 @@ export default function EditProfilePage() {
 
   const [editValue, setEditValue] = useState("");
   
-  // 生日选择器状态
   const [selectedYear, setSelectedYear] = useState(1998);
-  const [selectedMonth, setSelectedMonth] = useState(9); // 0-11
+  const [selectedMonth, setSelectedMonth] = useState(9);
   const [selectedDay, setSelectedDay] = useState(1);
   
   const yearScrollRef = useRef<HTMLDivElement>(null);
   const monthScrollRef = useRef<HTMLDivElement>(null);
   const dayScrollRef = useRef<HTMLDivElement>(null);
   
-  // 生成年份、月份、日期数据
   const years = Array.from({ length: 50 }, (_, i) => 2026 - i);
   const months = Array.from({ length: 12 }, (_, i) => i);
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
   
-  // 月份名称（英文）
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   function handleEdit(field: "nickname" | "birthday" | "bio") {
@@ -116,16 +109,14 @@ export default function EditProfilePage() {
       setEditingField(field);
       setShowEditModal(true);
     } else if (field === "birthday") {
-      // 解析当前生日日期
       const dateParts = birthday.split("-");
       if (dateParts.length === 3) {
         setSelectedYear(parseInt(dateParts[0]));
-        setSelectedMonth(parseInt(dateParts[1]) - 1); // 转换为0-11
+        setSelectedMonth(parseInt(dateParts[1]) - 1);
         setSelectedDay(parseInt(dateParts[2]));
       }
       setShowBirthdayPicker(true);
       
-      // 延迟执行滚动，等待DOM渲染完成
       setTimeout(() => {
         scrollToSelected();
       }, 100);
@@ -137,7 +128,6 @@ export default function EditProfilePage() {
   }
   
   function scrollToSelected() {
-    // 滚动到选中的月份
     if (monthScrollRef.current) {
       const monthIndex = months.indexOf(selectedMonth);
       const monthElement = monthScrollRef.current.children[monthIndex] as HTMLElement;
@@ -146,7 +136,6 @@ export default function EditProfilePage() {
       }
     }
     
-    // 滚动到选中的日期
     if (dayScrollRef.current) {
       const dayIndex = days.indexOf(selectedDay);
       const dayElement = dayScrollRef.current.children[dayIndex] as HTMLElement;
@@ -155,7 +144,6 @@ export default function EditProfilePage() {
       }
     }
     
-    // 滚动到选中的年份
     if (yearScrollRef.current) {
       const yearIndex = years.indexOf(selectedYear);
       const yearElement = yearScrollRef.current.children[yearIndex] as HTMLElement;
@@ -185,7 +173,6 @@ export default function EditProfilePage() {
   }
 
   function handleBirthdayConfirm() {
-    // 格式化日期为 YYYY-MM-DD 格式
     const formattedMonth = (selectedMonth + 1).toString().padStart(2, "0");
     const formattedDay = selectedDay.toString().padStart(2, "0");
     const newBirthday = `${selectedYear}-${formattedMonth}-${formattedDay}`;
@@ -546,5 +533,15 @@ export default function EditProfilePage() {
 
       <Toast open={toast.open} message={toast.message} />
     </div>
+  );
+}
+
+export default function EditProfilePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-joya-bg0 flex items-center justify-center">
+      <div className="text-joya-black/50">加载中...</div>
+    </div>}>
+      <EditProfileContent />
+    </Suspense>
   );
 }

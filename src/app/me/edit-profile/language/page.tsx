@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
 
@@ -9,7 +9,7 @@ import Toast from "@/components/Toast";
 type ToastState = { open: boolean; message: string };
 type Language = { code: string; name: string; flag: string };
 
-export default function LanguageSelectPage() {
+function LanguageSelectContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
@@ -76,7 +76,6 @@ export default function LanguageSelectPage() {
       return;
     }
     
-    // 将选择的语言返回给编辑资料页面
     const returnUrl = `/me/edit-profile?type=${languageType}&selected=${encodeURIComponent(JSON.stringify(selected))}`;
     router.push(returnUrl);
   }
@@ -131,5 +130,15 @@ export default function LanguageSelectPage() {
 
       <Toast open={toast.open} message={toast.message} />
     </div>
+  );
+}
+
+export default function LanguageSelectPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-joya-bg0 flex items-center justify-center">
+      <div className="text-joya-black/50">加载中...</div>
+    </div>}>
+      <LanguageSelectContent />
+    </Suspense>
   );
 }
