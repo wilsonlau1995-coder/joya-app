@@ -1,16 +1,38 @@
 "use client";
 
 import { useState, useRef, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowLeftRight, Heart, MessageCircle } from "lucide-react";
+import { useRouter, useParams } from "next/navigation";
+import { ArrowLeft, ArrowLeftRight, Heart, MessageCircle, MoreHorizontal } from "lucide-react";
+
+import BottomSheet from "@/components/BottomSheet";
+import Toast from "@/components/Toast";
 
 type Photo = { id: string; url: string };
 type Language = { code: string; name: string; flag: string };
 
+type ToastState = { open: boolean; message: string };
+
 export default function UserProfilePage() {
   const router = useRouter();
+  const params = useParams<{ id: string }>();
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [mainMenuOpen, setMainMenuOpen] = useState(false);
+  const [reportMenuOpen, setReportMenuOpen] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(() => {
+    const userId = params.id || "123";
+    const blockedUsers = localStorage.getItem('blockedUsers');
+    if (blockedUsers) {
+      try {
+        const blockedList = JSON.parse(blockedUsers);
+        return blockedList.includes(userId);
+      } catch (e) {
+        return false;
+      }
+    }
+    return false;
+  });
+  const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
 
   const photos: Photo[] = [
     { id: "1", url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop" },
@@ -79,7 +101,66 @@ export default function UserProfilePage() {
   }
 
   function handleMessageClick() {
-    router.push("/messages");
+    const userId = params.id || "123";
+    router.push(`/messages/${userId}`);
+  }
+
+  function showToast(message: string) {
+    setToast({ open: true, message });
+    window.setTimeout(() => setToast({ open: false, message: "" }), 1600);
+  }
+
+  function handleReport() {
+    setMainMenuOpen(false);
+    setReportMenuOpen(true);
+  }
+
+  function handleReportReason(reason: string) {
+    setReportMenuOpen(false);
+    showToast("举报成功");
+  }
+
+  function handleBlock() {
+    const userId = params.id || "123";
+    setMainMenuOpen(false);
+    setIsBlocked(true);
+    
+    // 持久化到本地存储
+    const blockedUsers = localStorage.getItem('blockedUsers');
+    let blockedList = [];
+    if (blockedUsers) {
+      try {
+        blockedList = JSON.parse(blockedUsers);
+      } catch (e) {
+        blockedList = [];
+      }
+    }
+    if (!blockedList.includes(userId)) {
+      blockedList.push(userId);
+      localStorage.setItem('blockedUsers', JSON.stringify(blockedList));
+    }
+    
+    showToast("拉黑成功");
+  }
+
+  function handleUnblock() {
+    const userId = params.id || "123";
+    setMainMenuOpen(false);
+    setIsBlocked(false);
+    
+    // 从本地存储中移除
+    const blockedUsers = localStorage.getItem('blockedUsers');
+    if (blockedUsers) {
+      try {
+        let blockedList = JSON.parse(blockedUsers);
+        blockedList = blockedList.filter(id => id !== userId);
+        localStorage.setItem('blockedUsers', JSON.stringify(blockedList));
+      } catch (e) {
+        // 忽略错误
+      }
+    }
+    
+    showToast("移除黑名单成功");
   }
 
   return (
@@ -92,13 +173,26 @@ export default function UserProfilePage() {
                 <button
                   type="button"
                   className="joya-card h-11 w-11 grid place-items-center"
-                  onClick={() => router.back()}
+                  onClick={() => {
+                    if (window.history.length > 1) {
+                      router.back();
+                    } else {
+                      router.push("/me");
+                    }
+                  }}
                   aria-label="返回"
                 >
                   <ArrowLeft className="h-5 w-5 text-joya-black/70" />
                 </button>
                 <div className="text-base font-semibold text-joya-black">个人资料</div>
-                <div className="h-11 w-11"></div>
+                <button
+                  type="button"
+                  className="h-11 w-11 grid place-items-center"
+                  onClick={() => setMainMenuOpen(true)}
+                  aria-label="更多"
+                >
+                  <MoreHorizontal className="h-5 w-5 text-joya-black/70" />
+                </button>
               </div>
 
               <div className="mt-6">
@@ -213,6 +307,74 @@ export default function UserProfilePage() {
           Message
         </button>
       </div>
+
+      <BottomSheet open={mainMenuOpen} onClose={() => setMainMenuOpen(false)}>
+        <div className="space-y-3">
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-yellow font-semibold"
+            onClick={handleReport}
+          >
+            举报
+          </button>
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-yellow font-semibold"
+            onClick={isBlocked ? handleUnblock : handleBlock}
+          >
+            {isBlocked ? "移除黑名单" : "拉黑"}
+          </button>
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-black/5 transition text-joya-black/60"
+            onClick={() => setMainMenuOpen(false)}
+          >
+            取消
+          </button>
+        </div>
+      </BottomSheet>
+
+      <BottomSheet open={reportMenuOpen} onClose={() => setReportMenuOpen(false)}>
+        <div className="space-y-3">
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
+            onClick={() => handleReportReason("信息违规")}
+          >
+            信息违规
+          </button>
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
+            onClick={() => handleReportReason("色情内容")}
+          >
+            色情内容
+          </button>
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
+            onClick={() => handleReportReason("骚扰谩骂")}
+          >
+            骚扰谩骂
+          </button>
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
+            onClick={() => handleReportReason("垃圾广告")}
+          >
+            垃圾广告
+          </button>
+          <button
+            type="button"
+            className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-black/5 transition text-joya-black/60"
+            onClick={() => setReportMenuOpen(false)}
+          >
+            取消
+          </button>
+        </div>
+      </BottomSheet>
+
+      <Toast open={toast.open} message={toast.message} />
       <div id="overlay-root" className="absolute inset-0 z-40" />
     </div>
   );

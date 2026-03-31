@@ -15,7 +15,7 @@ export default function BottomSheet({
 }: {
   open: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   children: React.ReactNode;
 }) {
   const titleId = useId();
@@ -66,19 +66,13 @@ export default function BottomSheet({
           >
             <div className="px-5 pt-4 pb-6">
               <div className="mx-auto h-1.5 w-12 rounded-full bg-joya-black/12" />
-              <div className="mt-4 flex items-center justify-between gap-3">
-                <div id={titleId} className="text-lg font-semibold">
-                  {title}
+              {title && (
+                <div className="mt-4 flex items-center gap-3">
+                  <div id={titleId} className="text-lg font-semibold">
+                    {title}
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="h-9 w-9 rounded-full bg-joya-black/5 border border-joya-black/10 grid place-items-center text-joya-black/60"
-                  aria-label="关闭"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
+              )}
               <div className="mt-4">{children}</div>
             </div>
           </motion.div>
