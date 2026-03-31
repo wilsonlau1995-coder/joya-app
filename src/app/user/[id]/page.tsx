@@ -153,7 +153,7 @@ export default function UserProfilePage() {
     if (blockedUsers) {
       try {
         let blockedList = JSON.parse(blockedUsers);
-        blockedList = blockedList.filter(id => id !== userId);
+        blockedList = blockedList.filter((id: string) => id !== userId);
         localStorage.setItem('blockedUsers', JSON.stringify(blockedList));
       } catch (e) {
         // 忽略错误
