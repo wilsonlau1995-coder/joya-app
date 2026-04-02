@@ -191,7 +191,7 @@ function EditProfileContent() {
   }
 
   function handleRegionClick() {
-    router.replace(`/me/edit-profile/region?selected=${selectedRegion.code}`);
+    router.push(`/me/edit-profile/region?selected=${selectedRegion.code}`);
   }
 
   return (
