@@ -93,7 +93,7 @@ function EditProfileContent() {
   function handleLanguageClick(type: "native" | "interest") {
     const selectedLanguages = type === "native" ? nativeLanguages : interestLanguages;
     const url = `/me/edit-profile/language?type=${type}&selected=${encodeURIComponent(JSON.stringify(selectedLanguages))}`;
-    router.push(url);
+    router.replace(url);
   }
 
   const [editValue, setEditValue] = useState("");
@@ -191,7 +191,7 @@ function EditProfileContent() {
   }
 
   function handleRegionClick() {
-    router.push(`/me/edit-profile/region?selected=${selectedRegion.code}`);
+    router.replace(`/me/edit-profile/region?selected=${selectedRegion.code}`);
   }
 
   return (

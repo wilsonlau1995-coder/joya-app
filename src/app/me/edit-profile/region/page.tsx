@@ -54,7 +54,7 @@ function RegionPageContent() {
       const selectedCountry = countries.find(c => c.code === selectedRegion);
       if (selectedCountry) {
         const url = `/me/edit-profile?region=${selectedRegion}&regionName=${encodeURIComponent(selectedCountry.name)}&regionFlag=${encodeURIComponent(selectedCountry.flag)}`;
-        router.push(url);
+        router.replace(url);
       }
     }
   }
@@ -67,7 +67,7 @@ function RegionPageContent() {
         <button
           type="button"
           className="joya-card h-11 w-11 grid place-items-center"
-          onClick={() => router.push("/me/edit-profile")}
+          onClick={() => router.back()}
           aria-label="返回"
         >
           <ArrowLeft className="h-5 w-5 text-joya-black/70" />
