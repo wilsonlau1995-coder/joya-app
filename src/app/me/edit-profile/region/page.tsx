@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
 
@@ -9,7 +9,7 @@ import Toast from "@/components/Toast";
 type ToastState = { open: boolean; message: string };
 type Country = { code: string; name: string; flag: string };
 
-export default function RegionPage() {
+function RegionPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
@@ -119,5 +119,15 @@ export default function RegionPage() {
 
       <Toast open={toast.open} message={toast.message} />
     </div>
+  );
+}
+
+export default function RegionPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-joya-bg0 flex items-center justify-center">
+      <div className="text-joya-black/50">加载中...</div>
+    </div>}>
+      <RegionPageContent />
+    </Suspense>
   );
 }
