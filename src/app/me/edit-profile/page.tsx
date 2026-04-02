@@ -55,7 +55,7 @@ function EditProfileContent() {
         } else if (type === "interest") {
           setInterestLanguages(selectedLanguages);
         }
-        router.push("/me/edit-profile", { scroll: false });
+        router.replace("/me/edit-profile", { scroll: false });
       } catch (error) {
         console.error("解析语言选择结果失败:", error);
       }
@@ -63,7 +63,7 @@ function EditProfileContent() {
       setSelectedRegion({ code: region, name: regionName, flag: regionFlag });
       setRegion(regionName);
       showToast("已保存");
-      router.push("/me/edit-profile", { scroll: false });
+      router.replace("/me/edit-profile", { scroll: false });
     }
   }, [searchParams, router]);
 
