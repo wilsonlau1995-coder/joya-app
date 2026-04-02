@@ -31,6 +31,7 @@ function EditProfileContent() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [photoToDelete, setPhotoToDelete] = useState<string | null>(null);
   const [showBirthdayPicker, setShowBirthdayPicker] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState({ code: "US", name: "美国", flag: "🇺🇸" });
   
   const [nativeLanguages, setNativeLanguages] = useState<Language[]>([
     { code: "zh-CN", name: "中文", flag: "🇨🇳" },
@@ -42,6 +43,9 @@ function EditProfileContent() {
   useEffect(() => {
     const type = searchParams.get("type") as "native" | "interest";
     const selected = searchParams.get("selected");
+    const region = searchParams.get("region");
+    const regionName = searchParams.get("regionName");
+    const regionFlag = searchParams.get("regionFlag");
     
     if (type && selected) {
       try {
@@ -55,6 +59,11 @@ function EditProfileContent() {
       } catch (error) {
         console.error("解析语言选择结果失败:", error);
       }
+    } else if (region && regionName && regionFlag) {
+      setSelectedRegion({ code: region, name: regionName, flag: regionFlag });
+      setRegion(regionName);
+      showToast("已保存");
+      router.push("/me/edit-profile", { scroll: false });
     }
   }, [searchParams, router]);
 
@@ -181,6 +190,10 @@ function EditProfileContent() {
     setShowBirthdayPicker(false);
   }
 
+  function handleRegionClick() {
+    router.push(`/me/edit-profile/region?selected=${selectedRegion.code}`);
+  }
+
   return (
     <div className="relative px-5 pt-[calc(18px+env(safe-area-inset-top))] pb-[calc(18px+env(safe-area-inset-bottom))] min-h-screen bg-joya-bg0">
       <div className="flex items-center justify-between">
@@ -296,13 +309,18 @@ function EditProfileContent() {
               </div>
             </button>
 
-            <div className="w-full p-4 flex items-center justify-between border-b border-joya-black/5">
+            <button
+              type="button"
+              className="w-full p-4 flex items-center justify-between border-b border-joya-black/5 hover:bg-joya-yellow/20 transition"
+              onClick={handleRegionClick}
+            >
               <span className="text-joya-black/80 font-medium">地区</span>
               <div className="flex items-center gap-2">
-                <span className="text-xl">🇺🇸</span>
-                <span className="text-sm text-joya-black/50">美国</span>
+                <span className="text-xl">{selectedRegion.flag}</span>
+                <span className="text-sm text-joya-black/50">{selectedRegion.name}</span>
+                <ChevronRight className="h-4 w-4 text-joya-black/40" />
               </div>
-            </div>
+            </button>
 
             <button
               type="button"
@@ -505,6 +523,8 @@ function EditProfileContent() {
           </div>
         </div>
       )}
+
+
 
       <Toast open={toast.open} message={toast.message} />
     </div>
