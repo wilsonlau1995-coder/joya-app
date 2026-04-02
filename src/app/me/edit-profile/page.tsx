@@ -200,7 +200,7 @@ function EditProfileContent() {
         <button
           type="button"
           className="joya-card h-11 w-11 grid place-items-center"
-          onClick={() => router.back()}
+          onClick={() => router.push("/me")}
           aria-label="返回"
         >
           <ArrowLeft className="h-5 w-5 text-joya-black/70" />
