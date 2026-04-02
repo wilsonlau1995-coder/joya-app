@@ -117,7 +117,7 @@ export default function UserProfilePage() {
 
   function handleReportReason(reason: string) {
     setReportMenuOpen(false);
-    showToast("举报成功");
+    showToast("Reported successfully");
   }
 
   function handleBlock() {
@@ -125,7 +125,7 @@ export default function UserProfilePage() {
     setMainMenuOpen(false);
     setIsBlocked(true);
     
-    // 持久化到本地存储
+    // Save to localStorage
     const blockedUsers = localStorage.getItem('blockedUsers');
     let blockedList = [];
     if (blockedUsers) {
@@ -140,7 +140,7 @@ export default function UserProfilePage() {
       localStorage.setItem('blockedUsers', JSON.stringify(blockedList));
     }
     
-    showToast("拉黑成功");
+    showToast("Blocked successfully");
   }
 
   function handleUnblock() {
@@ -148,7 +148,7 @@ export default function UserProfilePage() {
     setMainMenuOpen(false);
     setIsBlocked(false);
     
-    // 从本地存储中移除
+    // Remove from localStorage
     const blockedUsers = localStorage.getItem('blockedUsers');
     if (blockedUsers) {
       try {
@@ -156,11 +156,11 @@ export default function UserProfilePage() {
         blockedList = blockedList.filter((id: string) => id !== userId);
         localStorage.setItem('blockedUsers', JSON.stringify(blockedList));
       } catch (e) {
-        // 忽略错误
+        // Ignore error
       }
     }
     
-    showToast("移除黑名单成功");
+    showToast("Unblocked successfully");
   }
 
   return (
@@ -180,16 +180,16 @@ export default function UserProfilePage() {
                       router.push("/me");
                     }
                   }}
-                  aria-label="返回"
+                  aria-label="Back"
                 >
                   <ArrowLeft className="h-5 w-5 text-joya-black/70" />
                 </button>
-                <div className="text-base font-semibold text-joya-black">个人资料</div>
+                <div className="text-base font-semibold text-joya-black">Profile</div>
                 <button
                   type="button"
                   className="h-11 w-11 grid place-items-center"
                   onClick={() => setMainMenuOpen(true)}
-                  aria-label="更多"
+                  aria-label="More"
                 >
                   <MoreHorizontal className="h-5 w-5 text-joya-black/70" />
                 </button>
@@ -206,7 +206,7 @@ export default function UserProfilePage() {
                       <div key={photo.id} className="flex-shrink-0 w-full aspect-[3/4] snap-center">
                         <img
                           src={photo.url}
-                          alt={`照片 ${index + 1}`}
+                          alt={`Photo ${index + 1}`}
                           className="h-full w-full object-cover"
                         />
                       </div>
@@ -218,6 +218,7 @@ export default function UserProfilePage() {
                   <div className="absolute bottom-0 left-0 right-0 p-5 pointer-events-none">
                     <div className="text-white">
                       <div className="flex items-center gap-1">
+                        <span className="text-lg mr-1">🇯🇵</span>
                         <span className="text-2xl font-semibold">{nickname}</span>
                         <span className="text-xl text-pink-400">♀</span>
                       </div>
@@ -225,14 +226,6 @@ export default function UserProfilePage() {
                       <div className="mt-1 text-sm text-white/70">ID: 42568973</div>
                       
                       <div className="mt-2 text-sm text-white/90">{bio}</div>
-                      
-                      <div className="mt-2 flex items-center gap-1 text-sm text-white/80">
-                        <span className="text-lg">🇯🇵</span>
-                        <span>,</span>
-                        <span>{nativeLanguages.map(l => l.name).join(', ')}</span>
-                        <ArrowLeftRight className="h-3 w-3" />
-                        <span>{interestLanguages.map(l => l.name).join(', ')}</span>
-                      </div>
                     </div>
                   </div>
 
@@ -252,7 +245,7 @@ export default function UserProfilePage() {
               </div>
 
               <div className="mt-6">
-                <div className="text-lg font-semibold text-joya-black mb-4">动态</div>
+                <div className="text-lg font-semibold text-joya-black mb-4">Posts</div>
                 <div className="grid grid-cols-2 gap-3">
                   {posts.map((post, index) => {
                     const colors = ["bg-joya-yellow/30", "bg-joya-pink/30", "bg-joya-blue/30", "bg-joya-purple/30"];
@@ -266,7 +259,7 @@ export default function UserProfilePage() {
                         {post.type === "image" && post.image ? (
                           <img
                             src={post.image}
-                            alt="动态图片"
+                            alt="Post image"
                             className="h-full w-full object-cover"
                           />
                         ) : (
@@ -315,21 +308,21 @@ export default function UserProfilePage() {
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-yellow font-semibold"
             onClick={handleReport}
           >
-            举报
+            Report
           </button>
           <button
             type="button"
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-yellow font-semibold"
             onClick={isBlocked ? handleUnblock : handleBlock}
           >
-            {isBlocked ? "移除黑名单" : "拉黑"}
+            {isBlocked ? "Unblock" : "Block"}
           </button>
           <button
             type="button"
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-black/5 transition text-joya-black/60"
             onClick={() => setMainMenuOpen(false)}
           >
-            取消
+            Cancel
           </button>
         </div>
       </BottomSheet>
@@ -339,37 +332,37 @@ export default function UserProfilePage() {
           <button
             type="button"
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
-            onClick={() => handleReportReason("信息违规")}
+            onClick={() => handleReportReason("inappropriate_content")}
           >
-            信息违规
+            Inappropriate Content
           </button>
           <button
             type="button"
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
-            onClick={() => handleReportReason("色情内容")}
+            onClick={() => handleReportReason("adult_content")}
           >
-            色情内容
+            Adult Content
           </button>
           <button
             type="button"
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
-            onClick={() => handleReportReason("骚扰谩骂")}
+            onClick={() => handleReportReason("harassment")}
           >
-            骚扰谩骂
+            Harassment
           </button>
           <button
             type="button"
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-yellow/20 transition text-joya-black"
-            onClick={() => handleReportReason("垃圾广告")}
+            onClick={() => handleReportReason("spam")}
           >
-            垃圾广告
+            Spam
           </button>
           <button
             type="button"
             className="joya-card w-full p-4 flex items-center justify-center bg-white hover:bg-joya-black/5 transition text-joya-black/60"
             onClick={() => setReportMenuOpen(false)}
           >
-            取消
+            Cancel
           </button>
         </div>
       </BottomSheet>

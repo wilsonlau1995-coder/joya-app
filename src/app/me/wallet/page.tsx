@@ -33,7 +33,7 @@ export default function WalletPage() {
     if (!pack) return;
     setDiamonds((v) => v + pack.diamonds);
     setPoints((v) => v + pack.bonusPoints);
-    showToast(`已模拟购买 ${pack.price}`);
+    showToast(`Purchase simulated: ${pack.price}`);
   }
 
   return (
@@ -43,16 +43,16 @@ export default function WalletPage() {
           type="button"
           className="joya-card h-11 w-11 grid place-items-center"
           onClick={() => router.push("/me")}
-          aria-label="返回"
+          aria-label="Back"
         >
           <ArrowLeft className="h-5 w-5 text-joya-black/70" />
         </button>
-        <div className="text-base font-semibold">充值钻石</div>
+        <div className="text-base font-semibold">Recharge Diamonds</div>
         <button
           type="button"
           className="joya-card h-11 w-11 grid place-items-center"
           onClick={() => router.push("/me/wallet/details")}
-          aria-label="查看明细"
+          aria-label="View details"
         >
           <ReceiptText className="h-5 w-5 text-joya-black/70" />
         </button>
@@ -86,7 +86,7 @@ export default function WalletPage() {
       </div>
 
       <div className="mt-8 text-center text-xs text-joya-black/45">
-        如果对充值服务有疑问，请联系官方客服
+        If you have questions about recharge service, please contact customer support
       </div>
 
       <Toast open={toast.open} message={toast.message} />

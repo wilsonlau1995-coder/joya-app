@@ -120,6 +120,7 @@ export default function ProfilePreviewPage() {
                   <div className="absolute bottom-0 left-0 right-0 p-5 pointer-events-none">
                     <div className="text-white">
                       <div className="flex items-center gap-1">
+                        <span className="text-lg mr-1">🇺🇸</span>
                         <span className="text-2xl font-semibold">{nickname}</span>
                         <span className="text-xl text-blue-400 transform rotate-12">♂</span>
                       </div>
@@ -127,14 +128,6 @@ export default function ProfilePreviewPage() {
                       <div className="mt-1 text-sm text-white/70">ID: 58658654</div>
                       
                       <div className="mt-2 text-sm text-white/90">{bio}</div>
-                      
-                      <div className="mt-2 flex items-center gap-1 text-sm text-white/80">
-                        <span className="text-lg">🇺🇸</span>
-                        <span>,</span>
-                        <span>{nativeLanguages.map(l => l.name).join(', ')}</span>
-                        <ArrowLeftRight className="h-3 w-3" />
-                        <span>{interestLanguages.map(l => l.name).join(', ')}</span>
-                      </div>
                     </div>
                   </div>
 

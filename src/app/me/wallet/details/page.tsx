@@ -30,7 +30,7 @@ export default function WalletDetailsPage() {
   const monthScrollRef = useRef<HTMLDivElement>(null);
   const yearScrollRef = useRef<HTMLDivElement>(null);
   
-  const monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const years = Array.from({ length: 5 }, (_, i) => 2026 - i);
   
   const rechargeTransactions: RechargeTransaction[] = [
@@ -41,10 +41,10 @@ export default function WalletDetailsPage() {
   ];
   
   const consumptionTransactions: ConsumptionTransaction[] = [
-    { id: "c1", item: "翻译点数 x 100", diamonds: -50, time: "2026-03-28 15:20:33" },
-    { id: "c2", item: "翻译点数 x 200", diamonds: -100, time: "2026-03-27 12:45:10" },
-    { id: "c3", item: "翻译点数 x 50", diamonds: -25, time: "2026-03-26 18:10:05" },
-    { id: "c4", item: "翻译点数 x 150", diamonds: -75, time: "2026-03-25 11:30:28" },
+    { id: "c1", item: "Translation Points x 100", diamonds: -50, time: "2026-03-28 15:20:33" },
+    { id: "c2", item: "Translation Points x 200", diamonds: -100, time: "2026-03-27 12:45:10" },
+    { id: "c3", item: "Translation Points x 50", diamonds: -25, time: "2026-03-26 18:10:05" },
+    { id: "c4", item: "Translation Points x 150", diamonds: -75, time: "2026-03-25 11:30:28" },
   ];
   
   useEffect(() => {
@@ -81,11 +81,11 @@ export default function WalletDetailsPage() {
           type="button"
           className="joya-card h-11 w-11 grid place-items-center"
           onClick={() => router.push("/me/wallet")}
-          aria-label="返回"
+          aria-label="Back"
         >
           <ArrowLeft className="h-5 w-5 text-joya-black/70" />
         </button>
-        <div className="text-base font-semibold">充值消费明细</div>
+        <div className="text-base font-semibold">Transaction History</div>
         <div className="h-11 w-11"></div>
       </div>
 
@@ -99,7 +99,7 @@ export default function WalletDetailsPage() {
           }`}
           onClick={() => setActiveTab("recharge")}
         >
-          充值
+          Recharge
         </button>
         <button
           type="button"
@@ -110,7 +110,7 @@ export default function WalletDetailsPage() {
           }`}
           onClick={() => setActiveTab("consumption")}
         >
-          消费
+          Consumption
         </button>
       </div>
 
@@ -129,7 +129,7 @@ export default function WalletDetailsPage() {
                 <div className={`text-sm font-semibold ${
                   transaction.status === "success" ? "text-joya-black/80" : "text-red-500"
                 }`}>
-                  {transaction.status === "success" ? "操作成功" : "操作失败"}
+                  {transaction.status === "success" ? "Success" : "Failed"}
                 </div>
               </div>
             </div>
@@ -144,7 +144,7 @@ export default function WalletDetailsPage() {
             className="flex items-center gap-1 text-sm text-joya-black/80 font-medium mb-4"
             onClick={() => setShowMonthPicker(true)}
           >
-            <span>{selectedYear}年{monthNames[selectedMonth]}</span>
+            <span>{selectedYear} {monthNames[selectedMonth]}</span>
             <ChevronRight className="h-3 w-3 text-joya-black/50" />
           </button>
 
@@ -178,15 +178,15 @@ export default function WalletDetailsPage() {
                 className="text-joya-black/70 text-sm font-medium"
                 onClick={() => setShowMonthPicker(false)}
               >
-                取消
+                Cancel
               </button>
-              <div className="text-base font-semibold">选择月份</div>
+              <div className="text-base font-semibold">Select Month</div>
               <button
                 type="button"
                 className="text-joya-yellow text-sm font-semibold"
                 onClick={() => setShowMonthPicker(false)}
               >
-                确定
+                Confirm
               </button>
             </div>
             
@@ -209,7 +209,7 @@ export default function WalletDetailsPage() {
                     }`}
                     onClick={() => setSelectedYear(year)}
                   >
-                    {year}年
+                    {year}
                   </button>
                 ))}
               </div>

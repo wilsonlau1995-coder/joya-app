@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeft, ChevronRight, Shield, AlertTriangle } from "lucide-react";
+import { ArrowLeft, ChevronRight, Shield, AlertTriangle, Mail } from "lucide-react";
 
 export default function AccountSecurityPage() {
   const router = useRouter();
@@ -21,10 +21,21 @@ export default function AccountSecurityPage() {
         <div className="h-11 w-11" />
       </div>
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 space-y-1">
+        <div className="w-full p-4 bg-white flex items-center justify-between">
+          <span className="text-joya-black/80">ID</span>
+          <span className="text-joya-black">123456789</span>
+        </div>
+        <div className="w-full p-4 bg-white flex items-center justify-between">
+          <span className="text-joya-black/80">关联账户</span>
+          <div className="flex items-center gap-2">
+            <Mail className="h-4 w-4 text-joya-black/60" />
+            <span className="text-joya-black">example@gmail.com</span>
+          </div>
+        </div>
         <button
           type="button"
-          className="joya-card w-full p-4 flex items-center justify-between bg-white hover:bg-joya-yellow/20 transition"
+          className="w-full p-4 bg-white flex items-center justify-between hover:bg-joya-yellow/20 transition"
           onClick={() => router.push("/settings/account-security/delete")}
         >
           <div className="flex items-center gap-3">

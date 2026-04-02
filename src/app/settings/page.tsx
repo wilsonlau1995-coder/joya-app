@@ -28,10 +28,10 @@ export default function SettingsPage() {
   }, []);
 
   const languageNames: Record<string, string> = {
-    'zh-CN': '中文',
-    'zh-TW': '繁體中文',
+    'zh-CN': 'Chinese',
+    'zh-TW': 'Traditional Chinese',
     'en': 'English',
-    'ko': '한국어',
+    'ko': 'Korean',
   };
 
   function showToast(message: string) {
@@ -40,7 +40,7 @@ export default function SettingsPage() {
   }
 
   function handleLogout() {
-    showToast("已登出");
+    showToast("Logged out");
     localStorage.removeItem("token");
     router.push("/");
   }
@@ -52,11 +52,11 @@ export default function SettingsPage() {
           type="button"
           className="joya-card h-11 w-11 grid place-items-center"
           onClick={() => router.push("/me")}
-          aria-label="返回"
+          aria-label="Back"
         >
           <ArrowLeft className="h-5 w-5 text-joya-black/70" />
         </button>
-        <div className="text-base font-semibold text-joya-black">设置</div>
+        <div className="text-base font-semibold text-joya-black">Settings</div>
         <div className="h-11 w-11" />
       </div>
 
@@ -68,7 +68,7 @@ export default function SettingsPage() {
         >
           <div className="flex items-center gap-3">
             <Shield className="h-5 w-5 text-joya-black/70" />
-            <span className="text-joya-black/80">账号安全</span>
+            <span className="text-joya-black/80">Account Security</span>
           </div>
           <ChevronRight className="h-5 w-5 text-joya-black/40" />
         </button>
@@ -80,7 +80,7 @@ export default function SettingsPage() {
         >
           <div className="flex items-center gap-3">
             <Users className="h-5 w-5 text-joya-black/70" />
-            <span className="text-joya-black/80">黑名单</span>
+            <span className="text-joya-black/80">Blacklist</span>
           </div>
           <ChevronRight className="h-5 w-5 text-joya-black/40" />
         </button>
@@ -92,10 +92,10 @@ export default function SettingsPage() {
         >
           <div className="flex items-center gap-3">
             <Globe className="h-5 w-5 text-joya-black/70" />
-            <span className="text-joya-black/80">语言选择</span>
+            <span className="text-joya-black/80">Language</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-joya-black/50">{languageNames[currentLanguage] || '中文'}</span>
+            <span className="text-sm text-joya-black/50">{languageNames[currentLanguage] || 'Chinese'}</span>
             <ChevronRight className="h-5 w-5 text-joya-black/40" />
           </div>
         </button>
@@ -107,7 +107,7 @@ export default function SettingsPage() {
         >
           <div className="flex items-center gap-3">
             <Info className="h-5 w-5 text-joya-black/70" />
-            <span className="text-joya-black/80">关于我们</span>
+            <span className="text-joya-black/80">About Us</span>
           </div>
           <ChevronRight className="h-5 w-5 text-joya-black/40" />
         </button>
@@ -119,7 +119,7 @@ export default function SettingsPage() {
             onClick={handleLogout}
           >
             <LogOut className="h-5 w-5" />
-            <span>退出登录</span>
+            <span>Log Out</span>
           </button>
         </div>
       </div>

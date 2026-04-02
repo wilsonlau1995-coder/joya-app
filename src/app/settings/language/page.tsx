@@ -36,10 +36,12 @@ export default function LanguagePage() {
   }, []);
 
   const languages: Language[] = [
-    { code: "zh-CN", name: "简体中文", flag: "🇨🇳" },
-    { code: "zh-TW", name: "繁體中文", flag: "🇹🇼" },
-    { code: "en", name: "English", flag: "🇬🇧" },
-    { code: "ko", name: "한국어", flag: "🇰🇷" },
+    { code: "en", name: "English", flag: "" },
+    { code: "zh-CN", name: "简体中文", flag: "" },
+    { code: "zh-TW", name: "繁體中文", flag: "" },
+    { code: "vi", name: "Tiếng Việt", flag: "" },
+    { code: "ko", name: "한국어", flag: "" },
+    { code: "id", name: "Bahasa Indonesia", flag: "" },
   ];
 
   function showToast(message: string) {
@@ -75,7 +77,7 @@ export default function LanguagePage() {
         >
           <ArrowLeft className="h-5 w-5 text-joya-black/70" />
         </button>
-        <div className="text-base font-semibold text-joya-black">语言选择</div>
+        <div className="text-base font-semibold text-joya-black">language</div>
         <button
           type="button"
           className={`h-11 px-4 rounded-2xl font-medium transition ${
@@ -102,13 +104,13 @@ export default function LanguagePage() {
             }`}
             onClick={() => handleLanguageSelect(language.code)}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{language.flag}</span>
-              <span className="text-joya-black/80 font-medium">{language.name}</span>
-            </div>
-            {selectedLanguage === language.code && (
+            <span className="text-joya-black/80 font-medium">{language.name}</span>
+            {selectedLanguage === language.code ? (
               <div className="h-6 w-6 rounded-full bg-joya-yellow flex items-center justify-center">
                 <Check className="h-4 w-4 text-joya-black" />
+              </div>
+            ) : (
+              <div className="h-6 w-6 rounded-full border border-joya-black/20 flex items-center justify-center">
               </div>
             )}
           </button>

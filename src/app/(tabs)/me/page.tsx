@@ -116,7 +116,11 @@ export default function MePage() {
           </button>
         </div>
 
-        <div className="mt-4 text-2xl font-semibold flex items-center gap-1">{user.name} <span className="text-lg text-blue-500 transform rotate-12">♂</span></div>
+        <div className="mt-4 text-2xl font-semibold flex items-center gap-1">
+          <span className="text-lg mr-1" aria-hidden>🇺🇸</span>
+          {user.name} 
+          <span className="text-lg text-blue-500 transform rotate-12">♂</span>
+        </div>
 
         <div className="mt-1.5 inline-flex items-center gap-2 text-joya-black/60">
           <span className="text-sm">ID: {user.id}</span>
@@ -131,20 +135,6 @@ export default function MePage() {
         </div>
 
         <div className="mt-2 max-w-[320px] text-joya-black/70">“{user.bio}”</div>
-
-        <div
-          className="mt-3 inline-flex items-center gap-2 text-sm text-joya-black/80"
-          aria-label={`From United States, native language ${user.native}, language of interest ${user.learning}`}
-        >
-          <span className="text-lg leading-none" aria-hidden>
-            🇺🇸
-          </span>
-          <span>,</span>
-          <span>Eng</span>
-          <ArrowLeftRight className="h-3.5 w-3.5 text-joya-yellow" strokeWidth={2} aria-hidden />
-          <span>Jpn</span>
-          <span className="sr-only">From United States. Native: {user.native}. Learning: {user.learning}.</span>
-        </div>
       </div>
 
       <div className="mt-6">
@@ -201,7 +191,7 @@ export default function MePage() {
           <div className="joya-card p-4 flex items-center justify-between">
             <div className="flex items-center gap-2 text-joya-black/80">
               <Sparkles className="h-4 w-4" />
-              语言选择
+              language
             </div>
             <select className="bg-white/70 border border-joya-black/10 rounded-lg px-3 py-2 text-sm">
               <option>中文</option>

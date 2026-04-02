@@ -262,41 +262,6 @@ function EditProfileContent() {
           </div>
         </div>
 
-        <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-joya-black">语言</h3>
-          
-          <div className="joya-card bg-white overflow-hidden">
-            <button
-              type="button"
-              className="w-full p-4 flex items-center justify-between border-b border-joya-black/5 hover:bg-joya-yellow/20 transition"
-              onClick={() => handleLanguageClick("native")}
-            >
-              <div className="flex items-center gap-3">
-                <Globe className="h-5 w-5 text-joya-black/70" />
-                <span className="text-joya-black/80 font-medium">Native</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-joya-black/50">{nativeLanguages.map(l => l.name).join(', ')}</span>
-                <ChevronRight className="h-4 w-4 text-joya-black/40" />
-              </div>
-            </button>
-
-            <button
-              type="button"
-              className="w-full p-4 flex items-center justify-between hover:bg-joya-yellow/20 transition"
-              onClick={() => handleLanguageClick("interest")}
-            >
-              <div className="flex items-center gap-3">
-                <Globe className="h-5 w-5 text-joya-black/70" />
-                <span className="text-joya-black/80 font-medium">Interest</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-joya-black/50">{interestLanguages.map(l => l.name).join(', ')}</span>
-                <ChevronRight className="h-4 w-4 text-joya-black/40" />
-              </div>
-            </button>
-          </div>
-        </div>
 
         <div className="space-y-3">
           <h3 className="text-lg font-semibold text-joya-black">基本资料</h3>
